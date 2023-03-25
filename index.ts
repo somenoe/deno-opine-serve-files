@@ -1,11 +1,3 @@
-/**
- * Run this example using:
- *
- *    deno run --allow-net --allow-read ./examples/downloads/index.ts
- *
- *    after cloning the repo locally.
- */
-
 import { dirname, join } from "https://deno.land/x/opine@2.3.3/deps.ts";
 import opine from "https://deno.land/x/opine@2.3.3/mod.ts";
 
@@ -15,10 +7,10 @@ const __dirname = dirname(import.meta.url);
 app.get("/", function (_req, res) {
   res.send(
     "<ul>" +
-      '<li>Download <a href="/files/amazing.txt">amazing.txt</a>.</li>' +
-      '<li>Download <a href="/files/missing.txt">missing.txt</a>.</li>' +
-      '<li>Download <a href="/files/CCTV大赛上海分赛区.txt">CCTV大赛上海分赛区.txt</a>.</li>' +
-      "</ul>",
+    '<li>Download <a href="/files/amazing.txt">amazing.txt</a>.</li>' +
+    '<li>Download <a href="/files/missing.txt">missing.txt</a>.</li>' +
+    '<li>Download <a href="/files/CCTV大赛上海分赛区.txt">CCTV大赛上海分赛区.txt</a>.</li>' +
+    "</ul>",
   );
 });
 
@@ -43,13 +35,15 @@ app.get("/files/:file(*)", async function (req, res, next) {
   }
 });
 
-const DEV_URL="http://localhost:3000/"
-
+// show image
 app.get("/show/files/:file(*)", async function (req, res, next) {
-  const fileName=req.params.file
-
   try {
-    await res.send(`<img src=${DEV_URL+'files/'+ fileName} alt=${fileName} width="300">`);
+    // * START: diff from download
+    const fileName = req.params.file
+    const DEV_URL = "http://localhost:3000/"
+
+    await res.send(`<img src=${DEV_URL + 'files/' + fileName} alt=${fileName} width="300">`);
+    // * END
   } catch (err) {
     // file for download not found
     if (err instanceof Deno.errors.NotFound) {
